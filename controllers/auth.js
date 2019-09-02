@@ -3,30 +3,18 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const utils = require("../config/config");
 
-exports.auth = async (req, res, next) => {
+exports.signup = async (req, res, next) => {
   try {
-    const { username, email, password } = req.body;
+    const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (user) {
-      const match = await bcrypt.compare(password, user.password);
-      if (match) {
-        const token = jwt.sign(
-          {
-            data: user
-          },
-          utils.jwtSecret,
-          { expiresIn: 3600000 }
-        );
-        return res.json(token);
-      } else {
-        return res.json("Incorret email or password");
-      }
+      return res.json(`${email} already has an account`);
     }
     const newUser = new User({
-      username,
       email,
       password
     });
+
     const saltRounds = 10;
     const hashedpassword = await bcrypt.hash(password, saltRounds);
     newUser.password = hashedpassword;
@@ -39,8 +27,44 @@ exports.auth = async (req, res, next) => {
       utils.jwtSecret,
       { expiresIn: 3600000 }
     );
+    const response = {
+      user: newUser.email,
+      collection: newUser.movies,
+      token: token
+    };
 
-    res.json(token);
+    res.json(response);
+  } catch (error) {
+    res.json(error.message);
+  }
+};
+
+exports.login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+    if (user) {
+      const match = await bcrypt.compare(password, user.password);
+      if (match) {
+        const token = jwt.sign(
+          {
+            data: user
+          },
+          utils.jwtSecret,
+          { expiresIn: 3600000 }
+        );
+        const response = {
+          user: user.email,
+          collection: user.movies,
+          token: token
+        };
+        return res.json(response);
+      } else {
+        return res.json("Incorret email or password");
+      }
+    } else {
+      return res.json(`No Such account under ${email}`);
+    }
   } catch (error) {
     res.json(error.message);
   }

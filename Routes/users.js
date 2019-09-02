@@ -4,6 +4,6 @@ const mongoose = require("mongoose");
 
 const userController = require("../controllers/users");
 
-router.post("/", userController.createUser);
+router.post("/", userController.getUser);
 
 module.exports = router;
