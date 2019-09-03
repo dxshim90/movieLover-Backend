@@ -55,12 +55,52 @@ exports.addMovie = async (req, res, next) => {
     if (user.movies.some(element => element.id === movie.id)) {
       return res.json("That Movie is already in your collection");
     }
-    console.log("hit");
     user.movies.push(movie);
     await user.save();
     res.json("Movie Added to collection");
   } catch (error) {
     console.log(error);
     res.json(error);
+  }
+};
+
+exports.removeMovie = async (req, res, next) => {
+  try {
+    const { email, movie } = req.body;
+    const user = await User.findOne({ email });
+    const filter = user.movies.filter(element => {
+      return element.id !== movie.id;
+    });
+    user.movies = filter;
+    await user.save();
+    res.json("Movie has been removed from your collection");
+  } catch (error) {
+    res.json(error);
+  }
+};
+
+exports.search = async (req, res, next) => {
+  try {
+    const { query } = req.body;
+    const request = await fetch(
+      `https://api.themoviedb.org/3/search/movie?api_key=${utils.APIKEY}&language=en-US&query=${query}&page=1&include_adult=false`
+    );
+    const response = await request.json();
+    res.json(response.results);
+  } catch (error) {
+    res.json(error.message);
+  }
+};
+
+exports.suggested = async (req, res, next) => {
+  try {
+    const { movieId } = req.body;
+    const request = await fetch(
+      `https://api.themoviedb.org/3/movie/${movieId}/recommendations?api_key=${utils.APIKEY}&language=en-US&page=1`
+    );
+    const response = await request.json();
+    res.json(response);
+  } catch (error) {
+    res.json(error.message);
   }
 };

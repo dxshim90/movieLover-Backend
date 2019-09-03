@@ -12,4 +12,10 @@ router.post("/add", moviesController.addMovie);
 
 router.post("/collection", moviesController.getCollection);
 
+router.post("/remove", moviesController.removeMovie);
+
+router.post("/search", moviesController.search);
+
+router.post("/suggested", moviesController.suggested);
+
 module.exports = router;
