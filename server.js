@@ -9,14 +9,13 @@ const cors = require("cors");
 
 const app = express();
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(cors());
 
 mongoose.connect(process.env.mongoDB, { useNewUrlParser: true }, () => {
   console.log(`Db Connected`);
 });
-
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 
 app.use("/users", userRoutes);
 app.use("/auth", authRoutes);
