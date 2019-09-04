@@ -99,6 +99,19 @@ exports.suggested = async (req, res, next) => {
       `https://api.themoviedb.org/3/movie/${movieId}/recommendations?api_key=${utils.APIKEY}&language=en-US&page=1`
     );
     const response = await request.json();
+    res.json(response.results);
+  } catch (error) {
+    res.json(error.message);
+  }
+};
+
+exports.singleMovie = async (req, res, next) => {
+  try {
+    const { id } = req.body;
+    const request = await fetch(
+      `https://api.themoviedb.org/3/movie/${id}?api_key=${utils.APIKEY}&language=en-US`
+    );
+    const response = await request.json();
     res.json(response);
   } catch (error) {
     res.json(error.message);

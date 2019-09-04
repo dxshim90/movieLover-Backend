@@ -18,4 +18,6 @@ router.post("/search", moviesController.search);
 
 router.post("/suggested", moviesController.suggested);
 
+router.post("/info", moviesController.singleMovie);
+
 module.exports = router;
