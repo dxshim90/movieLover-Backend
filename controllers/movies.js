@@ -1,11 +1,10 @@
 const User = require("../model/User");
 const fetch = require("node-fetch");
-const utils = require("../config/config");
 
 exports.getCurrentMovies = async (req, res, next) => {
   try {
     const request = await fetch(
-      `https://api.themoviedb.org/3/movie/now_playing?api_key=${utils.APIKEY}&language=en-UK&page=1`
+      `https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.APIKEY}&language=en-UK&page=1`
     );
     const response = await request.json();
     res.json(response.results);
@@ -17,7 +16,7 @@ exports.getCurrentMovies = async (req, res, next) => {
 exports.getTopRated = async (req, res, next) => {
   try {
     const request = await fetch(
-      `https://api.themoviedb.org/3/movie/top_rated?api_key=${utils.APIKEY}&language=en-UK&page=1`
+      `https://api.themoviedb.org/3/movie/top_rated?api_key=${process.env.APIKEY}&language=en-UK&page=1`
     );
     const response = await request.json();
     res.json(response.results);
@@ -29,7 +28,7 @@ exports.getTopRated = async (req, res, next) => {
 exports.getUpcoming = async (req, res, next) => {
   try {
     const request = await fetch(
-      ` https://api.themoviedb.org/3/movie/upcoming?api_key=${utils.APIKEY}&language=en-UK&page=1`
+      ` https://api.themoviedb.org/3/movie/upcoming?api_key=${process.env.APIKEY}&language=en-UK&page=1`
     );
     const response = await request.json();
     res.json(response.results);
@@ -83,7 +82,7 @@ exports.search = async (req, res, next) => {
   try {
     const { query } = req.body;
     const request = await fetch(
-      `https://api.themoviedb.org/3/search/movie?api_key=${utils.APIKEY}&language=en-US&query=${query}&page=1&include_adult=false`
+      `https://api.themoviedb.org/3/search/movie?api_key=${process.env.APIKEY}&language=en-US&query=${query}&page=1&include_adult=false`
     );
     const response = await request.json();
     res.json(response.results);
@@ -96,7 +95,7 @@ exports.suggested = async (req, res, next) => {
   try {
     const { movieId } = req.body;
     const request = await fetch(
-      `https://api.themoviedb.org/3/movie/${movieId}/recommendations?api_key=${utils.APIKEY}&language=en-US&page=1`
+      `https://api.themoviedb.org/3/movie/${movieId}/recommendations?api_key=${process.env.APIKEY}&language=en-US&page=1`
     );
     const response = await request.json();
     res.json(response.results);
@@ -109,7 +108,7 @@ exports.singleMovie = async (req, res, next) => {
   try {
     const { id } = req.body;
     const request = await fetch(
-      `https://api.themoviedb.org/3/movie/${id}?api_key=${utils.APIKEY}&language=en-US`
+      `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.APIKEY}&language=en-US`
     );
     const response = await request.json();
     res.json(response);

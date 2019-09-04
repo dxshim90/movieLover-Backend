@@ -1,7 +1,7 @@
+require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const utils = require("./config/config");
 const userRoutes = require("./Routes/Users");
 const authRoutes = require("./Routes/auth");
 const movieRoutes = require("./Routes/movies");
@@ -11,7 +11,7 @@ const app = express();
 
 app.use(cors());
 
-mongoose.connect(utils.mongoDB, { useNewUrlParser: true }, () => {
+mongoose.connect(process.env.mongoDB, { useNewUrlParser: true }, () => {
   console.log(`Db Connected`);
 });
 

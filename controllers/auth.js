@@ -1,7 +1,6 @@
 const User = require("../model/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const utils = require("../config/config");
 
 exports.signup = async (req, res, next) => {
   try {
@@ -24,7 +23,7 @@ exports.signup = async (req, res, next) => {
       {
         data: newUser
       },
-      utils.jwtSecret,
+      process.env.jwtSecret,
       { expiresIn: 3600000 }
     );
     const response = {
@@ -50,7 +49,7 @@ exports.login = async (req, res, next) => {
           {
             data: user
           },
-          utils.jwtSecret,
+          process.env.jwtSecret,
           { expiresIn: 3600000 }
         );
         const response = {
