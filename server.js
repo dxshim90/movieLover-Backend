@@ -8,7 +8,7 @@ const movieRoutes = require("./Routes/movies");
 const cors = require("cors");
 
 const app = express();
-
+app.use(cors());
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Credentials", true);
@@ -22,7 +22,6 @@ app.use(function(req, res, next) {
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(cors());
 
 mongoose.connect(process.env.mongoDB, { useNewUrlParser: true }, () => {
   console.log(`Db Connected`);

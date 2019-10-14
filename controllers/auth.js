@@ -31,7 +31,6 @@ exports.signup = async (req, res, next) => {
       collection: newUser.movies,
       token: token
     };
-
     res.json(response);
   } catch (error) {
     res.json(error.message);
